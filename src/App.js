@@ -17,21 +17,21 @@ export default function App() {
   // ------------------FORM VALIDATION----------------------------------------------------
 
   const onSubmit = async (values, actions) => {
-    console.log(values);
-    console.log(actions);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     actions.resetForm();
   };
 
-  const { values, handleChange, handleSubmit, errors, touched } = useFormik({
-    initialValues: {
-      day: "",
-      month: "",
-      year: "",
-    },
-    validationSchema: basicSchema,
-    onSubmit,
-  });
+  const { values, handleChange, handleSubmit, errors, touched, isValid } =
+    useFormik({
+      initialValues: {
+        day: "",
+        month: "",
+        year: "",
+      },
+      validationSchema: basicSchema,
+      onSubmit,
+    });
+
   // ------------------------------MY VARIABLE---------------------------------------
 
   const birth_date = new Date(
@@ -50,7 +50,10 @@ export default function App() {
 
   function handleConvert() {
     handleSubmit();
-    if (!values.day || !values.month || !values.year) return;
+    if (!values.day || !values.month || !values.year || !isValid) {
+      return;
+    }
+
     setIsTrue(false);
     setFinalDay(days);
     setFinalMonth(months);
